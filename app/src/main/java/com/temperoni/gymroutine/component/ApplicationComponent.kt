@@ -7,7 +7,7 @@ import javax.inject.Singleton
  * @author Leandro Temperoni
  */
 @Singleton
-@Component(modules = [(ApplicationModule::class)])
+@Component(modules = [ApplicationModule::class])
 interface ApplicationComponent {
 
     val routinesComponent: RoutinesComponent

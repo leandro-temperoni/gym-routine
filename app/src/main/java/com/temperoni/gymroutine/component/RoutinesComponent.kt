@@ -1,13 +1,13 @@
 package com.temperoni.gymroutine.component
 
-import android.app.Activity
+import com.temperoni.gymroutine.view.activities.MainActivity
 import dagger.Subcomponent
 
 /**
  * @author Leandro Temperoni
  */
-@Subcomponent
+@Subcomponent(modules = [(RoutinesModule::class)])
 interface RoutinesComponent {
 
-    fun inject(activity: Activity)
+    fun inject(activity: MainActivity)
 }

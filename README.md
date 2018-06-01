@@ -4,13 +4,13 @@ This project aims to be a simple app, which contains gym routines. The idea behi
 
 ### General
 
-- [ ] MVVM architecture
-- [ ] Dependency injection with Dagger 2
+- [X] MVVM architecture
+- [X] Dependency injection with Dagger 2
 - [ ] Repository pattern
 
 ### Android Architecture Components
-- [ ] LiveData
-- [ ] ViewModel
+- [X] LiveData
+- [X] ViewModel
 - [ ] Room
 
 ### Testing
