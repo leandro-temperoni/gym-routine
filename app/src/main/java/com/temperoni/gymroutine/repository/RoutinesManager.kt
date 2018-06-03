@@ -9,7 +9,10 @@ import javax.inject.Inject
 class RoutinesManager @Inject constructor(val bus: EventBus) {
 
     fun getRoutines() {
-        FirebaseFirestore.getInstance().collection("routines")
+        // TODO replace the documentId for the logged user id
+        FirebaseFirestore.getInstance().collection("data")
+                .document("XlIvZKNMOJ4TTyRHiiLz")
+                .collection("routines")
                 .get()
                 .addOnCompleteListener {task ->
                     if (task.isSuccessful) {

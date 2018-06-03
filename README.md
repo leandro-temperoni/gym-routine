@@ -12,6 +12,7 @@ This project aims to be a simple app, which contains gym routines. The idea behi
 - [X] LiveData
 - [X] ViewModel
 - [ ] Room
+- [ ] Navigation
 
 ### Testing
 
