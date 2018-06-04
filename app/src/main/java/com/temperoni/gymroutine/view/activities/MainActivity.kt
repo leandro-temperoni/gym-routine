@@ -1,8 +1,8 @@
 package com.temperoni.gymroutine.view.activities
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -11,7 +11,6 @@ import com.temperoni.gymroutine.R
 import com.temperoni.gymroutine.repository.model.Routine
 import com.temperoni.gymroutine.view.adapters.RoutinesAdapter
 import com.temperoni.gymroutine.viewmodel.RoutinesViewModel
-
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
@@ -19,7 +18,6 @@ import javax.inject.Inject
 class MainActivity : BaseActivity() {
 
     @Inject
-    lateinit var factory: ViewModelProvider.Factory
     lateinit var model: RoutinesViewModel
 
     private val routinesAdapter = RoutinesAdapter()
@@ -41,6 +39,10 @@ class MainActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
             adapter = routinesAdapter
             addItemDecoration(DividerItemDecoration(this.context, RecyclerView.VERTICAL))
+        }
+
+        fab.setOnClickListener {
+            startActivity(Intent(this, AddEditRoutineActivity::class.java))
         }
     }
 

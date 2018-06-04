@@ -13,7 +13,7 @@ import javax.inject.Inject
 /**
  * @author Leandro Temperoni
  */
-class RoutinesViewModel @Inject constructor(val repository: RoutinesRepository, val bus:EventBus) : ViewModel() {
+class RoutinesViewModel @Inject constructor(val repository: RoutinesRepository, private val bus:EventBus) : ViewModel() {
 
     private var routines: MutableLiveData<List<Routine>>? = null
 

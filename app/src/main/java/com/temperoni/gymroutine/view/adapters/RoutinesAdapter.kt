@@ -1,6 +1,5 @@
 package com.temperoni.gymroutine.view.adapters
 
-import android.support.v4.widget.TextViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +30,6 @@ class RoutinesAdapter : RecyclerView.Adapter<RoutinesAdapter.RoutineViewHolder>(
 
     override fun onBindViewHolder(holder: RoutineViewHolder, position: Int) {
         holder.name.text = routines[position].name
-        holder.description.text = routines[position].description
     }
 
     inner class RoutineViewHolder(
