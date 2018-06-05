@@ -1,21 +1,22 @@
 package com.temperoni.gymroutine.view.adapters
 
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
+import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.RecyclerView.Adapter
+import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.temperoni.gymroutine.R
 import com.temperoni.gymroutine.repository.model.Group
-import com.temperoni.gymroutine.view.adapters.GroupsAdapter.GroupsViewHolder
-import kotlinx.android.synthetic.main.add_group_item.view.*
+import com.temperoni.gymroutine.view.adapters.GroupsAdapter.GroupItemViewHolder
 import kotlinx.android.synthetic.main.new_group_item.view.*
 
 /**
  * @author Leandro Temperoni
  */
-class GroupsAdapter(private val listener: GroupItemListener) : RecyclerView.Adapter<GroupsViewHolder>() {
+class GroupsAdapter(private val listener: GroupItemListener) : Adapter<GroupItemViewHolder>() {
 
     var groups: List<Group> = mutableListOf()
         set(value) {
@@ -23,57 +24,35 @@ class GroupsAdapter(private val listener: GroupItemListener) : RecyclerView.Adap
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupsViewHolder {
-        val layout = when (viewType) {
-            0 -> R.layout.new_group_item
-            else -> R.layout.add_group_item
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupItemViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(layout, parent, false)
-        return GroupsViewHolder(view)
+                .inflate(R.layout.new_group_item, parent, false)
+        return GroupItemViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return groups.size + 1
+        return groups.size
     }
 
-    override fun onBindViewHolder(holder: GroupsViewHolder, position: Int) {
-        when(holder) {
-            is GroupItemViewHolder -> bindGroupItem(holder, position)
-            is AddGroupViewHolder -> bindAddGroup(holder)
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            groups.size -> 1
-            else -> 0
-        }
-    }
-
-    private fun bindGroupItem(holder: GroupItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GroupItemViewHolder, position: Int) {
         holder.name.text = "Group ${position + 1}"
-    }
-
-    private fun bindAddGroup(holder: AddGroupViewHolder) {
-
+        holder.exercises.text = if (groups[position].exercises.isEmpty()) {
+            "0 exercises. Tap to add some!"
+        } else {
+            "${groups[position].exercises.size} exercises. Tap to add some more!"
+        }
+        holder.cross.setOnClickListener { listener.onCrossClick(position) }
+        holder.container.setOnClickListener { listener.onGroupClick(position) }
     }
 
     inner class GroupItemViewHolder(itemView: View,
-                                    val name : TextView = itemView.name) : GroupsViewHolder(itemView)
-
-    inner class AddGroupViewHolder(itemView: View,
-                                   val container: CardView = itemView.container) : GroupsViewHolder(itemView) {
-        init {
-            container.setOnClickListener {
-                listener.onAddGroupListener()
-            }
-        }
-    }
-
-    open inner class GroupsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+                                    val name : TextView = itemView.name,
+                                    val exercises : TextView = itemView.exercises,
+                                    val cross : ImageView = itemView.cross,
+                                    val container : ConstraintLayout = itemView.container) : ViewHolder(itemView)
 
     interface GroupItemListener {
-        fun onAddGroupListener()
+        fun onCrossClick(position: Int)
+        fun onGroupClick(position: Int)
     }
 }

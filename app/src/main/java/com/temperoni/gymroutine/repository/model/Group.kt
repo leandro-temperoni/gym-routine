@@ -1,6 +1,10 @@
 package com.temperoni.gymroutine.repository.model
 
+import com.temperoni.gymroutine.repository.dto.ExerciseDto
+
 /**
  * @author Leandro Temperoni
  */
-class Group
+data class Group(val exercises: List<Exercise> = mutableListOf()) {
+
+}

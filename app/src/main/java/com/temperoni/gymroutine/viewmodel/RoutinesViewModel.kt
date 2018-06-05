@@ -36,7 +36,9 @@ class RoutinesViewModel @Inject constructor(val repository: RoutinesRepository, 
 
     private fun mapRoutines(list: List<RoutineDto>): List<Routine> {
         val data = mutableListOf<Routine>()
-        list.forEach { data.add(Routine(it.name)) }
+        list.forEach {
+            data.add(Routine(it.name))
+        }
         return data
     }
 
