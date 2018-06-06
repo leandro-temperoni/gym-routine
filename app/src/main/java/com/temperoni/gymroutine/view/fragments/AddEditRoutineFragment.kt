@@ -9,9 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.VERTICAL
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.temperoni.gymroutine.R
 import com.temperoni.gymroutine.repository.model.Group
 import com.temperoni.gymroutine.view.adapters.GroupsAdapter
@@ -47,6 +45,11 @@ class AddEditRoutineFragment : Fragment(), GroupsAdapter.GroupItemListener {
         fun newInstance() = AddEditRoutineFragment()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -72,6 +75,18 @@ class AddEditRoutineFragment : Fragment(), GroupsAdapter.GroupItemListener {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.add_edit_routine_fragment_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.confirm -> saveRoutine()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private val observer: Observer<MutableList<Group>> = Observer {
         it?.let {
             groupsAdapter.groups = it
@@ -90,6 +105,11 @@ class AddEditRoutineFragment : Fragment(), GroupsAdapter.GroupItemListener {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    private fun saveRoutine() {
+        // TODO add loading here
+        model.addRoutine(name.text.toString())
     }
 
     override fun onCrossClick(position: Int) {

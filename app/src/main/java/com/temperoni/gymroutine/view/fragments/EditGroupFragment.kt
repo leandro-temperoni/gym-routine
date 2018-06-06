@@ -1,18 +1,15 @@
 package com.temperoni.gymroutine.view.fragments
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
+import android.view.*
 import com.temperoni.gymroutine.R
-import com.temperoni.gymroutine.repository.model.Group
+import com.temperoni.gymroutine.repository.model.Exercise
+import com.temperoni.gymroutine.view.views.ExerciseView
 import com.temperoni.gymroutine.viewmodel.AddEditRoutineViewModel
+import kotlinx.android.synthetic.main.fragment_edit_group.*
 
 // the fragment initialization parameters
 private const val ARG_POSITION = "position"
@@ -28,7 +25,7 @@ private const val ARG_POSITION = "position"
  */
 class EditGroupFragment : Fragment() {
 
-    private var position: Int? = null
+    private var position: Int = -1
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var model: AddEditRoutineViewModel
@@ -38,6 +35,7 @@ class EditGroupFragment : Fragment() {
         arguments?.let {
             position = it.getInt(ARG_POSITION)
         }
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -50,13 +48,32 @@ class EditGroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         model = ViewModelProviders.of(activity!!).get(AddEditRoutineViewModel::class.java)
 
-        model.getGroups().observe(this, observer)
+        exercises.addView(ExerciseView(context))
+        add.setOnClickListener { exercises.addView(ExerciseView(this.context)) }
     }
 
-    private val observer: Observer<MutableList<Group>> = Observer {
-        it?.let {
-            //
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.edit_group_fragment_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.confirm -> saveExercisesToGroup()
         }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun saveExercisesToGroup() {
+        if (position == -1) return
+        val list = mutableListOf<Exercise>()
+        for (i in 0 until exercises.childCount) {
+            val exercise = (exercises.getChildAt(i) as ExerciseView).getExercise()
+            list.add(Exercise(exercise.first, exercise.second))
+        }
+
+        model.updateExercises(position, list)
+        listener?.closeEditGroupFragment()
     }
 
     override fun onAttach(context: Context) {
@@ -85,7 +102,7 @@ class EditGroupFragment : Fragment() {
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
+        fun closeEditGroupFragment()
     }
 
     companion object {

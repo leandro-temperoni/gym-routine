@@ -1,20 +1,19 @@
 package com.temperoni.gymroutine.view.activities
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.temperoni.gymroutine.R
+import com.temperoni.gymroutine.repository.event.SingleEvent
 import com.temperoni.gymroutine.view.fragments.AddEditRoutineFragment
 import com.temperoni.gymroutine.view.fragments.EditGroupFragment
 import com.temperoni.gymroutine.viewmodel.AddEditRoutineViewModel
 import javax.inject.Inject
 
 class AddEditRoutineActivity : BaseActivity(), AddEditRoutineFragment.OnFragmentInteractionListener, EditGroupFragment.OnFragmentInteractionListener {
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     @Inject
     lateinit var model: AddEditRoutineViewModel
@@ -39,6 +38,8 @@ class AddEditRoutineActivity : BaseActivity(), AddEditRoutineFragment.OnFragment
                 .replace(R.id.container, fragment)
                 .addToBackStack(null)
                 .commit()
+
+        model.responseStatus.observe(this, Observer { goBackWithResult(it) })
     }
 
     private fun goToEditGroup(position: Int) {
@@ -47,6 +48,17 @@ class AddEditRoutineActivity : BaseActivity(), AddEditRoutineFragment.OnFragment
 
     override fun onGroupClick(position: Int) {
         goToEditGroup(position)
+    }
+
+    override fun closeEditGroupFragment() {
+        supportFragmentManager.popBackStack()
+    }
+
+    private fun goBackWithResult(event: SingleEvent<Pair<Boolean, String>>?) {
+        event?.getContentIfNotHandled()?.let {
+            setResult(RESULT_OK, Intent().putExtra("data", it))
+            finish()
+        }
     }
 }
 

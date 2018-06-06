@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -41,12 +42,31 @@ class MainActivity : BaseActivity() {
             addItemDecoration(DividerItemDecoration(this.context, RecyclerView.VERTICAL))
         }
 
+        ptr.setOnRefreshListener {
+            model.refreshRoutines()
+        }
+
         fab.setOnClickListener {
-            startActivity(Intent(this, AddEditRoutineActivity::class.java))
+            startActivityForResult(Intent(this, AddEditRoutineActivity::class.java), 124)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 124 && resultCode == RESULT_OK) {
+            showSnackBar(data?.getSerializableExtra("data") as Pair<Boolean, String>)
         }
     }
 
     private val routinesObserver: Observer<List<Routine>> = Observer {
-        it?.let { routinesAdapter.routines = it }
+        it?.let {
+            routinesAdapter.routines = it
+        }
+        ptr.isRefreshing = false
+    }
+
+    private fun showSnackBar(pair: Pair<Boolean, String>) {
+        // TODO customize snack bar so as to have success and error type
+        Snackbar.make(recyclerView, pair.second, Snackbar.LENGTH_LONG).show()
     }
 }
