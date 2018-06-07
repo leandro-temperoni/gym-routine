@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.temperoni.gymroutine.R
 import com.temperoni.gymroutine.repository.event.SingleEvent
+import com.temperoni.gymroutine.repository.model.Routine
 import com.temperoni.gymroutine.view.fragments.AddEditRoutineFragment
 import com.temperoni.gymroutine.view.fragments.EditGroupFragment
 import com.temperoni.gymroutine.viewmodel.AddEditRoutineViewModel
@@ -26,6 +27,11 @@ class AddEditRoutineActivity : BaseActivity(), AddEditRoutineFragment.OnFragment
 
         model = ViewModelProviders.of(this, factory).get(AddEditRoutineViewModel::class.java)
 
+        val routine = intent.extras?.get("routine")
+        routine?.let {
+            model.setRoutineForEdition(routine as Routine)
+        }
+
         addFragment(AddEditRoutineFragment.newInstance())
     }
 
@@ -39,7 +45,9 @@ class AddEditRoutineActivity : BaseActivity(), AddEditRoutineFragment.OnFragment
                 .addToBackStack(null)
                 .commit()
 
-        model.responseStatus.observe(this, Observer { goBackWithResult(it) })
+        model.responseStatus.observe(this, Observer {
+            goBackWithResult(it)
+        })
     }
 
     private fun goToEditGroup(position: Int) {

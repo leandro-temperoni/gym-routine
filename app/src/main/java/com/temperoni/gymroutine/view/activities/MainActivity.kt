@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), RoutinesAdapter.RoutineItemClickListener {
 
     @Inject
     lateinit var model: RoutinesViewModel
 
-    private val routinesAdapter = RoutinesAdapter()
+    private val routinesAdapter = RoutinesAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +49,14 @@ class MainActivity : BaseActivity() {
         fab.setOnClickListener {
             startActivityForResult(Intent(this, AddEditRoutineActivity::class.java), 124)
         }
+    }
+
+    override fun onRoutineItemClick(routine: Routine) {
+        val intent = Intent(this, AddEditRoutineActivity::class.java)
+        // TODO this should not be serializable, we should be passing the id only
+        // and retrieve the routine from local db
+        intent.putExtra("routine", routine)
+        startActivityForResult(intent, 124)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

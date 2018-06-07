@@ -3,8 +3,11 @@ package com.temperoni.gymroutine.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.temperoni.gymroutine.repository.RoutinesRepository
+import com.temperoni.gymroutine.repository.dto.GroupDto
 import com.temperoni.gymroutine.repository.dto.RoutineDto
 import com.temperoni.gymroutine.repository.event.RoutinesEvent
+import com.temperoni.gymroutine.repository.model.Exercise
+import com.temperoni.gymroutine.repository.model.Group
 import com.temperoni.gymroutine.repository.model.Routine
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -41,8 +44,24 @@ class RoutinesViewModel @Inject constructor(private val repository: RoutinesRepo
     private fun mapRoutines(list: List<RoutineDto>): List<Routine> {
         val data = mutableListOf<Routine>()
         list.forEach {
-            data.add(Routine(it.name))
+            val routine = Routine(it.id, it.name)
+            it.groups?.forEach {
+                it?.let {
+                    routine.groups.add(mapGroup(it))
+                }
+            }
+            data.add(routine)
         }
+        return data
+    }
+
+    private fun mapGroup(group: GroupDto): Group {
+        val data = Group()
+        val exercises = mutableListOf<Exercise>()
+        group.exercises?.forEach {
+            exercises.add(Exercise(it?.name ?: "", it?.reps ?: ""))
+        }
+        data.exercises = exercises
         return data
     }
 

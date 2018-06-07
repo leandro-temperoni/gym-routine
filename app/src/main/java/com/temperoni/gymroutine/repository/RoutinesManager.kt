@@ -2,6 +2,7 @@ package com.temperoni.gymroutine.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.temperoni.gymroutine.repository.dto.RoutineDto
+import com.temperoni.gymroutine.repository.event.DeleteRoutineEvent
 import com.temperoni.gymroutine.repository.event.RoutinesEvent
 import com.temperoni.gymroutine.repository.event.UpdateRoutineEvent
 import org.greenrobot.eventbus.EventBus
@@ -44,6 +45,20 @@ class RoutinesManager @Inject constructor(val bus: EventBus) {
                 }
                 .addOnCompleteListener { task ->
                     bus.post(UpdateRoutineEvent(task))
+                }
+    }
+
+    fun deleteRoutine(id: String) {
+        FirebaseFirestore.getInstance().collection("data")
+                .document("XlIvZKNMOJ4TTyRHiiLz")
+                .collection("routines")
+                .document(id)
+                .delete()
+                .addOnSuccessListener {
+                    bus.post(DeleteRoutineEvent())
+                }
+                .addOnFailureListener {
+                    // TODO handle this error
                 }
     }
 }

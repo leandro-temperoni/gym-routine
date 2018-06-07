@@ -6,10 +6,12 @@ import com.temperoni.gymroutine.repository.RoutinesRepository
 import com.temperoni.gymroutine.repository.dto.ExerciseDto
 import com.temperoni.gymroutine.repository.dto.GroupDto
 import com.temperoni.gymroutine.repository.dto.RoutineDto
+import com.temperoni.gymroutine.repository.event.DeleteRoutineEvent
 import com.temperoni.gymroutine.repository.event.SingleEvent
 import com.temperoni.gymroutine.repository.event.UpdateRoutineEvent
 import com.temperoni.gymroutine.repository.model.Exercise
 import com.temperoni.gymroutine.repository.model.Group
+import com.temperoni.gymroutine.repository.model.Routine
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import javax.inject.Inject
@@ -20,42 +22,51 @@ import javax.inject.Inject
 class AddEditRoutineViewModel
 @Inject constructor(private val repository: RoutinesRepository, private val bus: EventBus) : ViewModel() {
 
-    private var groups: MutableLiveData<MutableList<Group>>? = null
+    private var routine: MutableLiveData<Routine>? = null
+
     val responseStatus = MutableLiveData<SingleEvent<Pair<Boolean, String>>>()
 
     init {
         bus.register(this)
     }
 
-    fun getGroups(): MutableLiveData<MutableList<Group>> {
-        if (groups == null) {
-            groups = MutableLiveData()
-            groups?.value = mutableListOf(Group())
+    fun getRoutine(): MutableLiveData<Routine> {
+        if (routine == null) {
+            routine = MutableLiveData()
+            routine?.value = Routine()
         }
-        return groups as MutableLiveData<MutableList<Group>>
+        return routine as MutableLiveData<Routine>
+    }
+
+    fun setRoutineForEdition(routine: Routine) {
+        getRoutine().value = routine
     }
 
     fun addGroup() {
         // TODO look up for a way to improve this
-        val list = groups?.value
-        list?.add(Group())
-        groups?.value = list
+        val newRoutine = routine?.value
+        newRoutine?.groups?.add(Group())
+        routine?.value = newRoutine
     }
 
     fun deleteGroup(position: Int) {
-        val list = groups?.value
-        list?.removeAt(position)
-        groups?.value = list
+        val newRoutine = routine?.value
+        newRoutine?.groups?.removeAt(position)
+        routine?.value = newRoutine
     }
 
     fun updateExercises(position: Int, exercises: MutableList<Exercise>) {
-        val list = groups?.value
-        list?.get(position)?.exercises = exercises
-        groups?.value = list
+        val newRoutine = routine?.value
+        newRoutine?.groups?.get(position)?.exercises = exercises
+        routine?.value = newRoutine
     }
 
     fun addRoutine(name: String) {
-        repository.saveRoutine(mapRoutine(name, groups?.value))
+        repository.saveRoutine(mapRoutine(name, routine?.value))
+    }
+
+    fun deleteRoutine() {
+        repository.deleteRoutine(routine?.value?.id)
     }
 
     @Subscribe
@@ -69,14 +80,17 @@ class AddEditRoutineViewModel
         )
     }
 
-    private fun mapRoutine(name: String, groups: MutableList<Group>?): RoutineDto {
+    @Subscribe
+    fun onDeleteRoutineEvent(event: DeleteRoutineEvent) {
+        responseStatus.value = SingleEvent(
+                Pair(true, "Routine was successfully deleted!")
+        )
+    }
+
+    private fun mapRoutine(name:String, routine: Routine?): RoutineDto {
         val list = mutableListOf<GroupDto>()
-        if (groups == null) {
-            // post some error here
-        } else {
-            groups.forEach {
-                list.add(GroupDto(mapExercises(it.exercises)))
-            }
+        routine?.groups?.forEach {
+            list.add(GroupDto(mapExercises(it.exercises)))
         }
         return RoutineDto(name, list)
     }

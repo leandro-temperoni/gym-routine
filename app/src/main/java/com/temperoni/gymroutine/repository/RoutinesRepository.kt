@@ -6,15 +6,18 @@ import javax.inject.Inject
 /**
  * @author Leandro Temperoni
  */
-class RoutinesRepository @Inject constructor(val manager: RoutinesManager) {
+// TODO add Room support so as to complete the pattern
+class RoutinesRepository @Inject constructor(private val manager: RoutinesManager) {
 
     fun getRoutines() {
-        // TODO add Room support so as to complete the pattern
         manager.getRoutines()
     }
 
     fun saveRoutine(routine: RoutineDto) {
-        // TODO add Room support so as to complete the pattern
         manager.saveRoutine(routine)
+    }
+
+    fun deleteRoutine(id: String?) {
+        id?.let { manager.deleteRoutine(id) }
     }
 }

@@ -11,7 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.VERTICAL
 import android.view.*
 import com.temperoni.gymroutine.R
-import com.temperoni.gymroutine.repository.model.Group
+import com.temperoni.gymroutine.repository.model.Routine
 import com.temperoni.gymroutine.view.adapters.GroupsAdapter
 import com.temperoni.gymroutine.viewmodel.AddEditRoutineViewModel
 import kotlinx.android.synthetic.main.fragment_add_edit_routine_fragment.*
@@ -60,7 +60,7 @@ class AddEditRoutineFragment : Fragment(), GroupsAdapter.GroupItemListener {
         super.onViewCreated(view, savedInstanceState)
         model = ViewModelProviders.of(activity!!).get(AddEditRoutineViewModel::class.java)
 
-        model.getGroups().observe(this, observer)
+        model.getRoutine().observe(this, observer)
 
         with(groups) {
             setHasFixedSize(true)
@@ -83,13 +83,14 @@ class AddEditRoutineFragment : Fragment(), GroupsAdapter.GroupItemListener {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.confirm -> saveRoutine()
+            R.id.delete -> deleteRoutine()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private val observer: Observer<MutableList<Group>> = Observer {
+    private val observer: Observer<Routine> = Observer {
         it?.let {
-            groupsAdapter.groups = it
+            groupsAdapter.groups = it.groups
         }
     }
 
@@ -110,6 +111,11 @@ class AddEditRoutineFragment : Fragment(), GroupsAdapter.GroupItemListener {
     private fun saveRoutine() {
         // TODO add loading here
         model.addRoutine(name.text.toString())
+    }
+
+    private fun deleteRoutine() {
+        // TODO add loading here
+        model.deleteRoutine()
     }
 
     override fun onCrossClick(position: Int) {
