@@ -16,15 +16,8 @@ import com.temperoni.gymroutine.viewmodel.RoutinesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
-import android.view.MenuInflater
 import android.view.MenuItem
-import com.google.android.gms.tasks.Task
-import android.support.annotation.NonNull
-import com.google.android.gms.tasks.OnCompleteListener
 import com.firebase.ui.auth.AuthUI
-
-
-
 
 class MainActivity : BaseActivity(), RoutinesAdapter.RoutineItemClickListener {
 

@@ -31,7 +31,7 @@
     <ImageView
         android:id="@+id/cross"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="#000000"
+        android:src="@drawable/ic_close_black_8dp"
         android:layout_width="20dp"
         android:layout_height="20dp"/>
 
