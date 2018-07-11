@@ -9,9 +9,9 @@ import com.temperoni.gymroutine.repository.dto.RoutineDto
 import com.temperoni.gymroutine.repository.event.DeleteRoutineEvent
 import com.temperoni.gymroutine.repository.event.SingleEvent
 import com.temperoni.gymroutine.repository.event.UpdateRoutineEvent
-import com.temperoni.gymroutine.repository.model.Exercise
-import com.temperoni.gymroutine.repository.model.Group
-import com.temperoni.gymroutine.repository.model.Routine
+import com.temperoni.gymroutine.view.model.Exercise
+import com.temperoni.gymroutine.view.model.Group
+import com.temperoni.gymroutine.view.model.Routine
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import javax.inject.Inject
@@ -92,7 +92,7 @@ class AddEditRoutineViewModel
         routine?.groups?.forEach {
             list.add(GroupDto(mapExercises(it.exercises)))
         }
-        return RoutineDto(name, list)
+        return RoutineDto(name = name, groups = list)
     }
 
     private fun mapExercises(exercises: List<Exercise>): List<ExerciseDto> {

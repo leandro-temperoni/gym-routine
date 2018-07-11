@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.temperoni.gymroutine.R
 import com.temperoni.gymroutine.repository.event.SingleEvent
-import com.temperoni.gymroutine.repository.model.Routine
+import com.temperoni.gymroutine.view.model.Routine
 import com.temperoni.gymroutine.view.fragments.AddEditRoutineFragment
 import com.temperoni.gymroutine.view.fragments.EditGroupFragment
 import com.temperoni.gymroutine.viewmodel.AddEditRoutineViewModel

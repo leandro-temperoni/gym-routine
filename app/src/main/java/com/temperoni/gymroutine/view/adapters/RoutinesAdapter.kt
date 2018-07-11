@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.temperoni.gymroutine.R
-import com.temperoni.gymroutine.repository.model.Routine
+import com.temperoni.gymroutine.view.model.Routine
 import kotlinx.android.synthetic.main.routine_item.view.*
 
 /**

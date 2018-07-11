@@ -3,5 +3,7 @@ package com.temperoni.gymroutine.repository.dto
 /**
  * @author Leandro Temperoni
  */
-data class RoutineDto(val name: String? = null,
-                      val groups: List<GroupDto?>? = null) : BaseDto()
+data class RoutineDto(
+        val id: String = "",
+        val name: String = "",
+        val groups: List<GroupDto?>? = null)

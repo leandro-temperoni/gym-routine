@@ -23,7 +23,6 @@ class RoutinesManager @Inject constructor(private val bus: EventBus) {
                         task.result.forEach {
                             with(it) {
                                 val item = toObject(RoutineDto::class.java)
-                                item.id = id
                                 result.add(item)
                             }
                         }

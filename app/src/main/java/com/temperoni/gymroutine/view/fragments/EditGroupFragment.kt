@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.*
 import com.temperoni.gymroutine.R
-import com.temperoni.gymroutine.repository.model.Exercise
+import com.temperoni.gymroutine.view.model.Exercise
 import com.temperoni.gymroutine.view.views.ExerciseView
 import com.temperoni.gymroutine.viewmodel.AddEditRoutineViewModel
 import kotlinx.android.synthetic.main.fragment_edit_group.*

@@ -1,4 +1,4 @@
-package com.temperoni.gymroutine.repository.model
+package com.temperoni.gymroutine.view.model
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -8,17 +8,20 @@ import android.os.Parcelable
  */
 data class Routine(val id: String? = "",
                    val name: String? = "",
+                   val groupCount: Int? = 0,
                    val groups: MutableList<Group> = mutableListOf()) : Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
+            parcel.readInt(),
             parcel.createTypedArrayList(Group.CREATOR)
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(name)
+        parcel.writeInt(groupCount ?: 0)
         parcel.writeTypedList(groups)
     }
 

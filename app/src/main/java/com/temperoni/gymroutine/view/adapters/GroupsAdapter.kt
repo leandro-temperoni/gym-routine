@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.temperoni.gymroutine.R
-import com.temperoni.gymroutine.repository.model.Group
+import com.temperoni.gymroutine.view.model.Group
 import com.temperoni.gymroutine.view.adapters.GroupsAdapter.GroupItemViewHolder
 import kotlinx.android.synthetic.main.new_group_item.view.*
 

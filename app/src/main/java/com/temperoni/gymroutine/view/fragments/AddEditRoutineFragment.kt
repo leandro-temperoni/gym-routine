@@ -11,7 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.VERTICAL
 import android.view.*
 import com.temperoni.gymroutine.R
-import com.temperoni.gymroutine.repository.model.Routine
+import com.temperoni.gymroutine.view.model.Routine
 import com.temperoni.gymroutine.view.adapters.GroupsAdapter
 import com.temperoni.gymroutine.viewmodel.AddEditRoutineViewModel
 import kotlinx.android.synthetic.main.fragment_add_edit_routine_fragment.*

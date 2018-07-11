@@ -10,7 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import com.temperoni.gymroutine.R
-import com.temperoni.gymroutine.repository.model.Routine
+import com.temperoni.gymroutine.view.model.Routine
 import com.temperoni.gymroutine.view.adapters.RoutinesAdapter
 import com.temperoni.gymroutine.viewmodel.RoutinesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -81,8 +81,8 @@ class MainActivity : BaseActivity(), RoutinesAdapter.RoutineItemClickListener {
         }
     }
 
-    private val routinesObserver: Observer<List<Routine>> = Observer {
-        it?.let {
+    private val routinesObserver: Observer<List<Routine>> = Observer { list ->
+        list?.let { it ->
             routinesAdapter.routines = it
         }
         ptr.isRefreshing = false
